@@ -1,0 +1,10 @@
+package com.cg.games.minesweeper;
+import com.cg.engine.cell.*;
+
+public class MineSweeper extends Game{ 		//defined class game with game engine incl.
+	private static final int SIDE=9			//size of our board
+	@Override
+	public void initialize(){
+		setScreenSize(SIDE, SIDE);			//predefined method to set a size of gameboard.
+	}
+}
