@@ -4,6 +4,8 @@ import com.cg.engine.cell.*;
 public class MineSweeper extends Game{ 		//defined class game with game engine incl.
 	private static final int SIDE=9			//size of our board
 	private GameObject[][] gameField = new GameObject[SIDE][SIDE];
+	private int countMinesOnField;
+	
 	@Override
 	public void initialize(){
 		setScreenSize(SIDE, SIDE);			//predefined method to set a size of gameboard.
@@ -11,8 +13,14 @@ public class MineSweeper extends Game{ 		//defined class game with game engine i
 	}
 	private void createGame() {
 		for (int y=0; y<SIDE; y++){
-			gameField[y][x]=new GameObject(x,y);
-			setCellColor(x,y,Color.ORANGE);
+			for(int x=0;x<SIDE; x++)}
+				int randomNumber = getRandomNumber(10);
+				boolean isMine=randomNumber <1;
+				if(isMine){
+					countMinesOnField++;
+				}
+				gameField[y][x]=new GameObject(x,y, isMine);
+				setCellColor(x,y,Color.ORANGE);
 			}
 		}
 	}
@@ -22,10 +30,12 @@ public class MineSweeper extends Game{ 		//defined class game with game engine i
 public class GameObject {
     private int x;
     private int y;
+	public boolean isMine;
     // Constructor
-    public GameObject(int x, int y) {
+    public GameObject(int x, int y, boolean isMine) {
         this.x = x;
         this.y = y;
+		this.isMine=isMine;
     }
 }
 
@@ -53,3 +63,85 @@ Don’t forget to run your program and see what happens! 	*/
 	}
 
 //1stly: private GameObject[][] gameField;
+
+
+//part5.
+public class GameObject {
+    private int x;
+    private int y;
+    private boolean isMine;
+
+    public GameObject(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.isMine = Game.getRandomNumber(10) == 0;
+    }
+
+    public boolean isMine() {
+        return isMine;
+    }
+}
+/...\
+public class Game {
+    // ...
+    public static int getRandomNumber(int n) {
+        // Implementation of getRandomNumber method
+...
+
+//part6666
+KLOPIEREN = copy.
+To count the number of mined neighbors for each cell in the gameField and assign this value to the appropriate field of the cell, you can create a method that iterates through each cell, checks its neighbors, and counts the number of mined neighbors.
+\
+private void countMinedNeighbors() {
+	for(int y=0; y<SIDE; y++) {
+		for(int x=0; x<SIDE; x++){
+			if(!gameField[y][x].isMine){ 
+				int minedNeighbors=0;
+				int[] dx= {-1,-1,-1,0,0,1,1,1};
+				int[] dy= {-1,0,1,-1,1,-1,0,1};
+				for(int i=0; i<8; i++){
+					int newX=x+dx[i];
+					int newY=y+dy[i];
+					//check if the neighbor coordinates are within bounds.
+					if(newX >= 0 && newX < SIDE && newY >= 0 && newY < SIDE) {
+						if(gameField[newY][newX].isMine){
+							minedNeighbors++;
+						}
+					}
+				}
+				gameField[y][x].countMinedNeighbors=minedNeighbors;
+			}
+		}
+	}
+}
+public class GameObject {
+    public int countMineNeighbors; // Add the countMineNeighbors field.
+...
+public class MineSweeperGame extends Game {
+	private static final int SIDE=9;
+	...
+	@Override
+	public void initialize() {
+		setScreenSize(SIDE,SIDE);
+		createGame();
+		countMineNeighbors();
+	}
+	...
+	private void countMineNeighbors() {
+		for(int y=0;y<SIDE;y++){
+			for(int x=0;x<SIDE;x++){
+				if(!gameField[y][x].isMine){
+					int minedNeighbors=0;
+					List<GameObject> neighbors=getNeighbors(gameField[y][x]);
+					for(GameObject neighbor: neighbors){
+						if(neighbor.isMine){
+							minedNeighbors++;
+						}
+					}
+					gameField[y][x].countMineNeighbors=minedNeighbors;
+				}
+			}
+		}
+	}
+}
+	
