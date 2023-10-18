@@ -1,5 +1,7 @@
 package com.cg.games.minesweeper;
 import com.cg.engine.cell.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MineSweeper extends Game{ 		//defined class game with game engine incl.
 	private static final int SIDE=9			//size of our board
@@ -14,13 +16,44 @@ public class MineSweeper extends Game{ 		//defined class game with game engine i
 	private void createGame() {
 		for (int y=0; y<SIDE; y++){
 			for(int x=0;x<SIDE; x++)}
-				int randomNumber = getRandomNumber(10);
-				boolean isMine=randomNumber <1;
+				//int randomNumber = getRandomNumber(10);
+				boolean isMine=getRandomNumber(10) <1;
 				if(isMine){
 					countMinesOnField++;
 				}
 				gameField[y][x]=new GameObject(x,y, isMine);
 				setCellColor(x,y,Color.ORANGE);
+			}
+		}
+		countMineNeighbors();
+	}
+	private List<GameObject> getNeighbors(GameObject gameObject){
+		List<GameObject> result = new ArrayList<>();
+		for(int y=gameObjcet.y-1; y<=gameObject.y+1;y++){
+			for(int x=gameObject.y-1; x<=gameObject.x+1; x++){
+				if(y<0 || y>=SIDE) {
+					continue;
+				}
+				if(x<0 || x>=SIDE) {
+					continue;
+				}
+				if(x==gameObject.x && y==gameObject.y){
+					continue;
+				}
+				result.add(gameField[y][x]);
+			}
+		}
+		return result;
+	}
+	private void countMineNeighbors() {
+		for(int y=0; y<SIDE; y++){
+			for(int x=0; x<SIDE; x++){
+				GameObject gameObject=gameField[y][x];
+				if(!gameObject.isMine) {
+					gameObject.countMineNeighbors=Math.toIntExact(getNeighbors(gameObject)
+						.stream().filter(neighbor->neighbor.isMine).count());
+					}
+				}
 			}
 		}
 	}
@@ -31,6 +64,7 @@ public class GameObject {
     private int x;
     private int y;
 	public boolean isMine;
+	public int countMineNeighbors
     // Constructor
     public GameObject(int x, int y, boolean isMine) {
         this.x = x;
@@ -49,9 +83,8 @@ for (int y = 0; y < height; y++) {
 }
 /* 	To display all the cells on the screen, you can use the setCellColor(int, int, Color) method of the Game class. This method takes in the cell coordinates and color as parameters. You can call this method for each cell of the matrix and pass in appropriate values for x, y, and Color.ORANGE.
 
-We suggest putting the logic to draw the matrix into a separate createGame() method, which you can then call from the initialize() method. You can use loops to call the setCellColor(int, int, Color) method for each cell of the matrix.
+We suggest putting the logic to draw the matrix into a separate createGame() method, which you can then call from the initialize() method. You can use loops to call the setCellColor(int, int, Color) method for each cell of the matrix.	*/
 
-Don’t forget to run your program and see what happens! 	*/
 	private void createGame() {
 		gameField = new GameObject[SIDE][SIDE];
 		for(int y=0; y<SIDE; y++){
