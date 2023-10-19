@@ -1,0 +1,39 @@
+SETS: 
+List: List.of(1, 2, 2, 3);
+Set: Set.of(1, 2, 2, 3);
+Maps: Map.of(1, "a"), entry(2, "b"));
+
+/////////////////////////
+if statement:
+if(time<10){
+	System.out.println("Good Morning");
+} else if {
+	System.out.println("Good day.");
+} else {
+	System.out.println("Good evening.");
+	
+x switch:
+var result = switch(month) {
+	case JULY, AUGUST . ...
+	
+/////////////////
+throw new RuntimeException("Something went wrnog: (");
+
+//handling them:
+try {
+	//code to throw. .. 
+} catch (Exception exception) {
+	//fallback after exception
+}
+
+/////////////////////////////////
+* clone repo:
+* select branch main
+* java-version -> java17
+* open in intellij
+* test gradlew. 
+-> cd java.introduction
+-> git checkout Workshop
+-> idea64.exe [--line <number>] [--column <number>] <path ...>
+-> git config --global core.editor "C:/Prgoram Files/JetBrains/InteliJ IDEA 20223.1/bin/id/idea64.exe
+-> //launch\\ -> intellij java-introduction
