@@ -1,0 +1,25 @@
+New Java Collection Hierarchy
+	/|| Collection ||\_________________________________
+   /			|							  		   \
+Set		[n]SequencedCollection						   Queue
+|\				|__________________________________		|
+| \[n]SequencedSet						   |	   |	|
+|		|	\							   |       |	|
+SortedSet	 \___						   |       |	|
+|			  	 \						   |       |	|
+NavigableSet	LinkedHashSet			 List      Deque
+			   <<implementation>
+			   
+SequencedColection<String> sequencedCollection = ... ; //ArrayList, LinkedList, TreeSet...
+sequencedCollection.addFirst("First Element");
+sequencedCollection.addLast("Last Element");
+
+			Map
+			 |
+		SequencedMap
+	  _______|_______
+	  |				 |
+  SortedMap			 |
+	  |				 |
+NavigableMap	LinkedHashMap
+			  <<implementation>>
