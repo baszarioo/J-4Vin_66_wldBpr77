@@ -3,7 +3,7 @@ List: List.of(1, 2, 2, 3);
 Set: Set.of(1, 2, 2, 3);
 Maps: Map.of(1, "a"), entry(2, "b"));
 
-/////////////////////////
+/////////////////////////////////
 if statement:
 if(time<10){
 	System.out.println("Good Morning");
@@ -16,7 +16,7 @@ x switch:
 var result = switch(month) {
 	case JULY, AUGUST . ...
 	
-/////////////////
+/////////////////////////////////
 throw new RuntimeException("Something went wrnog: (");
 
 //handling them:
@@ -37,3 +37,7 @@ try {
 -> idea64.exe [--line <number>] [--column <number>] <path ...>
 -> git config --global core.editor "C:/Prgoram Files/JetBrains/InteliJ IDEA 20223.1/bin/id/idea64.exe
 -> //launch\\ -> intellij java-introduction
+/////////////////////////////////
+->cd
+->cd backend_uni/
+->intellij java-introduction/

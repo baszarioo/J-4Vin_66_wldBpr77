@@ -1,0 +1,130 @@
+@SpringBootTest
+public cass JavaBasicsSpec {
+	@Test
+	vuoid equalsAndHashcode() {
+		HashMap<MutableUser, Integer> userMap= new HashMap<>();
+		for(int i=0; i<100; i++){
+			userMap.put(new MutableUser("Jacek"+i, "Kowalski"), i);
+		}
+		assertEquals(100, userMap.size());
+	}
+	
+	@Test
+	void mutability() {
+		MutableUser user = new MutableUser("Jacek", "Kowalski");
+		user.setSurname("Placek");
+		assertEquals("Jacek", user.getName());
+		assertEquals("Placek", user.getSurname());
+	}
+	
+	@Test
+	void editImmutableField() {
+		ImmutableUser user= new ImmutableUser("Jacek", "Kowalski");
+		ImmutableUserManager userManager;
+		userManager= new ImmutableUserManager(new ImmutableUser(user.getName(), "Placek"));
+		assertEquals("Hello!, I'm Jacek Placek", userManager.introduceUser());
+	}
+	
+	@Test()
+	void inheritanceAndPolymorhpism() {
+		var client = new Client("Jacek", "Kowalski");
+		var seller = new Seller("Jacek", "Kowalski");
+		var admin = new Admin("Jacek", "Kowalski");
+		PlatfromFacade platformFacade = new PlatformFacade();
+		//expect:
+		 assertEquals("You bought an offer: offer-id", platformFacade.buyOffer(client, "offer-id"));
+        assertEquals("You bought an offer: offer-id", platformFacade.buyOffer(seller, "offer-id"));
+        assertEquals("You bought an offer: offer-id", platformFacade.buyOffer(admin, "offer-id"));
+
+        assertThrows(NotAllowedOperationException.class, () -> platformFacade.listOffer(client, "offer-id"));
+        assertEquals("You sold an offer: offer-id", platformFacade.listOffer(seller, "offer-id"));
+        assertEquals("You sold an offer: offer-id", platformFacade.listOffer(admin, "offer-id"));
+
+        assertThrows(NotAllowedOperationException.class, () -> platformFacade.doMagicWithOffer(client, "offer-id"));
+        assertThrows(NotAllowedOperationException.class, () -> platformFacade.doMagicWithOffer(seller, "offer-id"));
+        assertEquals("You cast a spell on an offer: offer-id", platformFacade.doMagicWithOffer(admin, "offer-id"));
+	}
+	private void setNameUsingMagic(ImmutableUser) {
+		try {
+			Field privateField = ImmutableUser.class.getDeclaredField("surname");
+			if((privateField.getModifiers() & Modifier.FINAL) == Modifier.FINAL){	return;		}
+			
+			privateField.setAccessible(true);
+			privateField.set("Placek");
+			privateField.setAccessible(false);
+		} catch (Exception e) {
+			throw new RuntimeException("Hacking failed :(");
+		]
+	}
+}
+
+// PlatformUser.java //
+public abstract class PlatformUser {
+	public boolean hasSellingAbility() { return false;} 
+	public boolean hasBuyingAbility() { return false; }
+	public boolean hasMagicAbility() { return false; }
+}
+
+// ImmutableUser.java //
+public class ImmutableUser extends PlatformUser {
+
+    final private String name;
+    final private String surname;
+
+    public ImmutableUser(String name, String surname) {
+        this.name = name;
+        this.surname = surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    @Override
+    public String toString() {
+        return "ImmutableUser{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                '}';
+    }
+	@Override
+	public boolean equals(Object o) {
+		if(this ==o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		ImmutableUser that = (ImmutableUser) o;
+		return Objects.equals*name, that.name) && Objects.equals(surname, that.surname);
+	}
+	@Override
+	public int hashCode() { return Objects.hash(name, surname); }
+}
+
+// PlatformFacade.java //
+public class PlatformFacade {
+
+    public String buyOffer(PlatformUser user, String offerId) {
+        if (user.hasBuyingAbility()) {
+            return String.format("You bought an offer: %s", offerId);
+        } else {
+            throw new NotAllowedOperationException();
+        }
+    }
+
+    public String listOffer(PlatformUser user, String offerId) {
+        if (user.hasSellingAbility()) {
+            return String.format("You sold an offer: %s", offerId);
+        } else {
+            throw new NotAllowedOperationException();
+        }
+    }
+	public String doMagicWithOffer(PlatformUser user, String offerId) {
+		if(user.hasMagicAbility()) {
+			return String.format("You cast a spell on an offer: %s",offerId);
+		} else {
+			throw new NotAllowedOperationException();
+		}
+	}
+}
